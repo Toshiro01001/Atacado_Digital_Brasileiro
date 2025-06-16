@@ -1,0 +1,131 @@
+:root {
+  --verde: rgb(0, 255, 110);
+  --azul: rgb(0, 123, 255);
+}
+
+@media (max-width: 768px) {
+  .cadastro {
+    position: static; /* remove position absolute */
+    text-align: center;
+  }
+}
+
+body {
+  font-family: "Poppins", Arial, Helvetica, sans-serif;
+  line-height: 1.6;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background: linear-gradient(
+    135deg,
+    rgb(102, 126, 234) 0%,
+    rgb(118, 75, 162) 100%
+  );
+  min-height: 100vh;
+}
+
+/* Corpo da página inicial principal*/
+.principal {
+  text-align: center;
+  margin: 40px auto;
+  max-width: 1000px;
+  width: 100%;
+  display: block;
+}
+
+/* Header da página */
+.banner {
+  color: rgb(80, 200, 120, 1);
+  margin: 0%;
+  display: block;
+  text-align: left;
+  margin-bottom: 10px;
+  font-size: 2rem;
+}
+
+/*menu superior direito*/
+.cadastro {
+  font-size: small;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  margin: 0px;
+  text-decoration: none;
+  color: black;
+}
+
+.destaque {
+  color: rgba(255, 215, 00, 1);
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.inicio {
+  font: 5px;
+}
+
+body a:hover {
+  text-decoration: underline;
+  color: black !important;
+  background-color: rgba(240, 240, 240, 0.5);
+}
+body a {
+  text-decoration: none;
+  padding: 8px 16px;
+  border-style: 5px;
+  transition: 0.2s;
+}
+
+.adm {
+  font-size: small;
+  position: absolute;
+  top: 40px;
+  right: 10px;
+  margin: 0px;
+  text-decoration: none;
+}
+
+.secao-produtos {
+  margin-top: 40px;
+  text-align: center;
+  width: 100%;
+}
+
+.caixas-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  justify-content: center;
+  margin-top: 30px;
+  align-items: stretch;
+  margin: 30px auto 0 auto;
+  max-width: 1000px;
+  width: 100%;
+}
+
+.caixa-link {
+  background-color: rgba(255, 255, 255, 1);
+  border: 2px solid rgba(224, 224, 224, 0.5);
+  border-radius: 15px;
+  padding: 30px 20px;
+  width: 250px;
+  flex: 0 0 250px;
+  text-decoration: none;
+  color: #333;
+  transition: 0.3s;
+  text-align: center;
+}
+.caixa-link:hover {
+  border-color: var(--verde);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 1);
+  transform: translateY(-5px);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+}
+
+.caixa-link h3 {
+  color: var(--azul);
+  margin-bottom: 10px;
+}

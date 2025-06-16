@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/style2.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <title>login</title>
+</head>
+
+<body>
+
+  <div class="wrap">
+    <form action="processar_login.php" method="POST">
+      <h1>login</h1>
+      <div class="caixa-input">
+        <input type="email" placeholder="Email" required>
+        <i class="bx bxs-lock-alt"></i>
+      </div>
+      <div class="caixa-input">
+        <input type="password" placeholder="Senha" required>
+        <i class="bx bxs-lock-alt"></i>
+      </div>
+      <div class="esqueceu">
+        <label><input type="checkbox">Lembrar-me</label>
+        <a href="/">Esqueci minha senha</a>
+      </div>
+      <button type="submit" class="btn">login</button>
+      <div class="registro-link">
+        <a href="/Cadastros/cadastro.html">Não possui uma conta?</a>
+      </div>
+      <div class="voltar-home">
+        <a href="/index.html">← Voltar ao início</a>
+    </form>
+  </div>
+
+</body>
+
+</html>

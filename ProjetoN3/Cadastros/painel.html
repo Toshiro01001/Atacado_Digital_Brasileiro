@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel Administrativo</title>
+  <link rel="stylesheet" href="../style2.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Painel Administrativo</h1>
+      <p>Bem-vindo ao sistema de gestão do atacado digital do
+      <p class="destaque">BRASIL</p>. Escolha uma opção abaixo para começar.</p>
+    </div>
+    <div class="painel-card">
+      <i class="bx bx-package"></i>
+      <h2>Gerenciar Produtos</h2>
+      <p>Adicione, edite ou remova produtos do nosso catálogo. Controle os preços, descrições e imagens.</p>
+      <a href="produtos.html" class="btn">Gerenciar Produtos</a>
+    </div>
+    <div class="painel-card">
+      <i class="bx bx-box"></i>
+      <h2>Controle de Estoque</h2>
+      <p>Monitore quantidades, atualize valores e controle a disponibilidade dos produtos.</p>
+      <a href="estoque.html" class="btn btn-secundario">Gerenciar Estoque</a>
+    </div>
+    <div class="painel-card">
+      <i class="bx bx-bar-chart-alt-2"></i>
+      <h2>Relatórios</h2>
+      <p>Visualize dados de vendas, produtos mais vendidos e análises de desempenho.</p>
+      <a href="relatorios.html" class="btn">Ver Relatórios</a>
+    </div>
+    <div class="painel-card">
+      <i class="bx bx-cog"></i>
+      <h2>Configurações</h2>
+      <p>Ajuste configurações do sistema, usuários e preferências administrativas.</p>
+      <a href="configuracoes.html" class="btn btn-secundario">Configurações</a>
+    </div>
+    <div class="voltar-home">
+      <a href="/index.html">← Voltar ao site</a>
+    </div>
+  </div>
+  </div>
+  <script>
+
+    window.addEventListener('load', function () {
+      verificarLogin();
+    });
+
+    function verificarLogin() {
+      const adminLogado = sessionStorage.getItem('adminLogado');
+      if (!adminLogado) {
+        alert('Acesso negado! Faça login primeiro.');
+        window.location.href = 'admin.html';
+        return;
+      }
+    }
+
+    function logout() {
+      if (confirm('Tem certeza que deseja sair?')) {
+        sessionStorage.removeItem('adminLogado');
+        alert('Logout realizado com sucesso!');
+        window.location.href = 'index.html';
+      }
+    }
+  </script>
+</body>
+
+</html>

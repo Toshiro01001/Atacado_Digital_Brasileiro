@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro</title>
+  <link rel="stylesheet" href="../style2.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+<body>
+  <div class="wrap">
+    <form id="formCadastro">
+      <h1>Cadastro</h1>
+
+      <div class="caixa-input">
+        <input type="text" name="nome" placeholder="Nome Completo" required>
+        <i class="bx bxs-user"></i>
+        <div class="erro">Nome deve conter pelo menos 2 caracteres</div>
+      </div>
+
+      <div class="caixa-input">
+        <input type="email" name="email" placeholder="Email" required>
+        <i class="bx bxs-envelope"></i>
+        <div class="erro">Digite um email válido por favor</div>
+      </div>
+
+      <div class="caixa-input">
+        <input type="tel" name="telefone" placeholder="Telefone (opcional)">
+        <i class="bx bxs-phone"></i>
+        <div class="erro">Digite um telefone válido</div>
+      </div>
+
+      <div class="caixa-input">
+        <select name="genero" required>
+          <option value="">Selecione o seu gênero</option>
+          <option value="masculino">Masculino</option>
+          <option value="feminino">Feminino</option>
+          <option value="outro">Outro</option>
+          <option value="prefiro_nao_informar">Prefiro não informar</option>
+        </select>
+        <i class="bx bxs-user-detail"></i>
+        <div class="erro">Por favor, selecione o gênero</div>
+      </div>
+
+      <div class="caixa-input">
+        <input type="password" name="senha" placeholder="Senha (mínimo 6 caracteres)" required>
+        <i class="bx bxs-lock-alt"></i>
+        <div class="erro">Senha deve ter pelo menos 6 caracteres</div>
+      </div>
+
+      <div class="caixa-input">
+        <input type="password" name="confirmar_senha" placeholder="Confirmar Senha" required>
+        <i class="bx bxs-lock-alt"></i>
+        <div class="erro">As senhas não coincidem</div>
+      </div>
+
+      <div class="termos">
+        <input type="checkbox" id="aceitar_termos" required>
+        <label for="aceitar_termos">
+          Eu aceito os <a href="#" target="_blank">Termos de Uso</a> e a
+          <a href="#" target="_blank">Política de Privacidade</a>
+          dessa safadeza aqui</label>
+        <div class="erro">Você deve aceitar os termos para continuar</div>
+      </div>
+
+      <button type="submit" class="btn" id="btnCadastro">Criar conta</button>
+
+      <div class="sucesso" id="mensagemSucesso">
+        Conta criada com sucesso! Redirecionando...
+      </div>
+
+      <div class="login-link">
+        <a href="login.html">Já possui uma conta? Faça o login</a>
+      </div>
+
+      <div class="voltar-home">
+        <a href="index.html">← Voltar ao início</a>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('formCadastro');
+    const btnCadastro = document.getElementById('btnCadastro');
+    const mensagemSucesso = document.getElementById('mensagemSucesso');
+
+
+    form.addEventListener('input', function (e) {
+      const campo = e.target;
+      validarCampo(campo);
+    });
+
+
+    function validarCampo(campo) {
+      const caixaInput = campo.closest('.caixa-input') || campo.closest('.termos');
+      const erro = caixaInput?.querySelector('.erro');
+
+
+      esconderErro(caixaInput, erro);
+
+      let temErro = false;
+      let mensagem = '';
+
+
+      switch (campo.name) {
+        case 'nome':
+          if (campo.value.length > 0 && campo.value.length < 2) {
+            temErro = true;
+            mensagem = 'Nome deve ter pelo menos 2 caracteres';
+          }
+          break;
+
+        case 'email':
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (campo.value.length > 0 && !emailRegex.test(campo.value)) {
+            temErro = true;
+            mensagem = 'Digite um email válido';
+          }
+          break;
+
+        case 'telefone':
+          if (campo.value.length > 0) {
+            const telefoneRegex = /^[\(\)\s\-\+\d]{10,}$/;
+            if (!telefoneRegex.test(campo.value.replace(/\D/g, ''))) {
+              temErro = true;
+              mensagem = 'Digite um telefone válido';
+            }
+          }
+          break;
+
+        case 'senha':
+          if (campo.value.length > 0 && campo.value.length < 6) {
+            temErro = true;
+            mensagem = 'Senha deve ter pelo menos 6 caracteres';
+          }
+
+          const confirmarSenha = document.querySelector('input[name="confirmar_senha"]');
+          if (confirmarSenha.value.length > 0) {
+            validarCampo(confirmarSenha);
+          }
+          break;
+
+        case 'confirmar_senha':
+          const senha = document.querySelector('input[name="senha"]').value;
+          if (campo.value.length > 0 && senha !== campo.value) {
+            temErro = true;
+            mensagem = 'As senhas não coincidem';
+          }
+          break;
+      }
+
+
+      if (temErro) {
+        mostrarErro(caixaInput, erro, mensagem);
+      }
+    }
+
+
+    function mostrarErro(caixaInput, erro, mensagem) {
+      if (caixaInput) caixaInput.classList.add('erro');
+      if (erro) {
+        if (mensagem) erro.textContent = mensagem;
+        erro.style.display = 'block';
+      }
+    }
+
+
+    function esconderErro(caixaInput, erro) {
+      if (caixaInput) caixaInput.classList.remove('erro');
+      if (erro) erro.style.display = 'none';
+    }
+
+
+    form.addEventListener('input', function () {
+      mensagemSucesso.style.display = 'none';
+    });
+
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+
+      const dados = {
+        nome: document.querySelector('input[name="nome"]').value.trim(),
+        email: document.querySelector('input[name="email"]').value.trim(),
+        telefone: document.querySelector('input[name="telefone"]').value.trim(),
+        genero: document.querySelector('select[name="genero"]').value,
+        senha: document.querySelector('input[name="senha"]').value,
+        confirmarSenha: document.querySelector('input[name="confirmar_senha"]').value,
+        aceitouTermos: document.getElementById('aceitar_termos').checked
+      };
+
+      let temErro = false;
+
+
+      if (dados.nome.length < 2) {
+        mostrarErroCompleto('nome', 'Nome deve ter pelo menos 2 caracteres');
+        temErro = true;
+      }
+
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(dados.email)) {
+        mostrarErroCompleto('email', 'Digite um email válido');
+        temErro = true;
+      }
+
+
+      if (dados.telefone.length > 0) {
+        const telefoneRegex = /^[\(\)\s\-\+\d]{10,}$/;
+        if (!telefoneRegex.test(dados.telefone.replace(/\D/g, ''))) {
+          mostrarErroCompleto('telefone', 'Digite um telefone válido');
+          temErro = true;
+        }
+      }
+
+
+      if (!dados.genero) {
+        const selectGenero = document.querySelector('select[name="genero"]');
+        const caixaInput = selectGenero.closest('.caixa-input');
+        const erro = caixaInput.querySelector('.erro');
+        mostrarErro(caixaInput, erro, 'Por favor, selecione o gênero');
+        temErro = true;
+      }
+
+
+      if (dados.senha.length < 6) {
+        mostrarErroCompleto('senha', 'Senha deve ter pelo menos 6 caracteres');
+        temErro = true;
+      }
+
+
+      if (dados.senha !== dados.confirmarSenha) {
+        mostrarErroCompleto('confirmar_senha', 'As senhas não coincidem');
+        temErro = true;
+      }
+
+
+      if (!dados.aceitouTermos) {
+        const termosDiv = document.querySelector('.termos');
+        const erro = termosDiv.querySelector('.erro');
+        mostrarErro(termosDiv, erro, 'Você deve aceitar os termos para continuar');
+        temErro = true;
+      }
+
+      if (!temErro) {
+        processarCadastro(dados);
+      }
+    });
+
+
+    function mostrarErroCompleto(nomeCampo, mensagem) {
+      const campo = document.querySelector(`input[name="${nomeCampo}"], select[name="${nomeCampo}"]`);
+      const caixaInput = campo.closest('.caixa-input');
+      const erro = caixaInput.querySelector('.erro');
+      mostrarErro(caixaInput, erro, mensagem);
+    }
+
+
+    function processarCadastro(dados) {
+      btnCadastro.disabled = true;
+      btnCadastro.textContent = 'Criando conta...';
+
+
+      setTimeout(() => {
+        console.log('Dados do cadastro:', dados);
+
+        mensagemSucesso.style.display = 'block';
+
+
+        setTimeout(() => {
+          window.location.href = 'login.html';
+        }, 2000);
+
+      }, 1500);
+    }
+
+    document.querySelector('input[name="telefone"]').addEventListener('input', function (e) {
+      let valor = e.target.value.replace(/\D/g, '');
+
+      if (valor.length >= 11) {
+        valor = valor.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+      } else if (valor.length >= 7) {
+        valor = valor.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+      } else if (valor.length >= 3) {
+        valor = valor.replace(/(\d{2})(\d{0,5})/, '($1) $2');
+      }
+
+      e.target.value = valor;
+    });
+  </script>
+</body>
+
+</html>

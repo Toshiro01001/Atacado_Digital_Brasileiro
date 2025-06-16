@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../style2.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+  <title>Painel do Admin</title>
+</head>
+
+<body>
+  <div class="wrap">
+    <form id="adminLoginForm">
+      <h1>Acesso Admin</h1>
+      <p class="admin-subtitle">Área restrita para administradores</p>
+      <div class="caixa-input">
+        <input type="text" id="usuario" placeholder="Usuário Admin" required>
+        <i class="bx bxs-user"></i>
+      </div>
+      <div class="caixa-input">
+        <input type="password" id="senha" placeholder="Senha Admin" required>
+        <i class="bx bxs-lock-alt"></i>
+      </div>
+      <button type="submit" class="btn" id="btnLogin">Entrar</button>
+      <div class="erro" id="mensagemErro">
+        Usuário ou senha incorretos!
+      </div>
+      <div class="sucesso" id="mensagemSucesso">
+      </div>
+      <div class="voltar-home">
+        <a href="index.html">← Voltar ao início</a>
+      </div>
+    </form>
+  </div>
+  <script>
+    const ADMIN_CREDENTIALS = {
+      usuario: 'admin',
+      senha: 'admin123'
+    };
+    const form = document.getElementById('adminLoginForm');
+    const btnLogin = document.getElementById('btnLogin');
+    const mensagemErro = document.getElementById('mensagemErro');
+    const mensagemSucesso = document.getElementById('mensagemSucesso');
+
+    function esconderMensagens() {
+      mensagemErro.style.display = 'none';
+      mensagemSucesso.style.display = 'none';
+    }
+
+    function mostrarErro(mensagem) {
+      esconderMensagens();
+      mensagemErro.textContent = mensagem;
+      mensagemErro.style.display = 'block';
+    }
+
+    function mostrarSucesso(mensagem) {
+      esconderMensagens();
+      mensagemSucesso.textContent = mensagem;
+      mensagemSucesso.style.display = 'block';
+    }
+
+    document.getElementById('usuario').addEventListener('input', esconderMensagens);
+    document.getElementById('senha').addEventListener('input', esconderMensagens);
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const usuario = document.getElementById('usuario').value.trim();
+      const senha = document.getElementById('senha').value;
+
+      if (!usuario) {
+        mostrarErro('Por favor, digite o usuário.');
+        return;
+      }
+
+      if (!senha) {
+        mostrarErro('Por favor, digite a senha.');
+        return;
+      }
+
+      btnLogin.disabled = true;
+      btnLogin.textContent = 'Verificando...';
+
+      setTimeout(() => {
+        if (usuario === ADMIN_CREDENTIALS.usuario && senha === ADMIN_CREDENTIALS.senha) {
+          sessionStorage.setItem('adminLogado', 'true');
+          mostrarSucesso('Login realizado com sucesso! Redirecionando...');
+          setTimeout(() => {
+            window.location.href = 'painel.html';
+          }, 2000);
+        } else {
+          mostrarErro('Usuário ou senha incorretos!');
+          btnLogin.disabled = false;
+          btnLogin.textContent = 'Entrar';
+        }
+      }, 1000);
+    });
+  </script>
+</body>
+
+</html>
