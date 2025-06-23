@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carrinho</title>
+  <link rel="stylesheet" href="/style2.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <div class="header">
+    <h1 class="banner"> 🛒 Seu carrinho está aqui! </h1>
+    <p>Finalize a sua compra com segurança!</p>
+    <div class="voltar-home">
+      <a href="/index.html">Início</a>
+    </div>
+  </div>
+
+  <div class="carrinho_container">
+    <div class="itens-section">
+      <h2 style="color: rgb(255, 215, 0); margin-bottom: 20px;">Itens do Carrinho</h2>
+      <div id="itens-carrinho"></div>
+    </div>
+
+    <div class="pagamento-section">
+      <div class="total-section">
+        <h3 style="color: white; margin-bottom: 10px;">Total da Compra</h3>
+        <div class="total-valor" id="total-valor">R$ 0,00</div>
+      </div>
+
+      <div class="metodo-pagamento">
+        <h3>💵 Dinheiro</h3>
+        <div class="caixa-input">
+          <input type="number" id="valor-recebido" placeholder="Valor recebido" step="0.01">
+        </div>
+        <div id="resultado-troco" class="resultado-calculo" style="display: none;"></div>
+        <button class="btn" onclick="finalizarCompra('dinheiro')">💵 Pagar com Dinheiro</button>
+      </div>
+      <div class="metodo-pagamento">
+        <h3>📱 PIX</h3>
+        <div style="text-align: center; margin: 15px 0;">
+          <p style="color: rgba(255, 255, 255, 0.8);"><strong>QR Code PIX</strong></p>
+        </div>
+        <div class="caixa-input">
+          <input type="text" id="codigo-pix" readonly placeholder="Código PIX será gerado aqui" style="font-family: monospace; font-size: 12px;">
+        </div>
+        <button class="btn" onclick="gerarCodigoPix()" style="background: rgb(102, 126, 234); margin-bottom: 10px;"> Gerar Código PIX</button>
+        <button class="btn" onclick="finalizarCompra('pix')"> Confirmar Pagamento PIX</button>
+      </div>
+
+      <div class="metodo-pagamento">
+        <h3>💳 Cartão</h3>
+        <div class="radio-group">
+          <label>
+            <input type="radio" name="tipo-cartao" value="credito" checked> Crédito
+          </label>
+          <label>
+            <input type="radio" name="tipo-cartao" value="debito"> Débito
+          </label>
+        </div>
+        <div class="caixa-input">
+          <input type="text" id="numero-cartao" placeholder="Número do Cartão" maxlength="19">
+        </div>
+        <div class="caixa-input">
+          <input type="text" id="nome-cartao" placeholder="Nome no Cartão">
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <div class="caixa-input" style="flex: 1;">
+            <input type="text" id="validade-cartao" placeholder="MM/AA" maxlength="5">
+          </div>
+          <div class="caixa-input" style="flex: 1;">
+            <input type="text" id="cvv-cartao" placeholder="CVV" maxlength="3">
+          </div>
+        </div>
+        <button class="btn" onclick="finalizarCompra('cartao')">💳 Processar Pagamento</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let carrinho = [
+      { id: 1, nome: "Arroz Branquin - 25kg", preco: 45.90, quantidade: 2 },
+      { id: 2, nome: "Detergente Neutro - 5L", preco: 28.90, quantidade: 1 },
+      { id: 3, nome: "Papel A4 - 10 Resmas", preco: 189.90, quantidade: 1 }
+    ];
+
+    function carregarCarrinho() {
+      const container = document.getElementById('itens-carrinho');
+
+      if (carrinho.length === 0) {
+        container.innerHTML = '<div class="carrinho-vazio">Seu carrinho está vazio 😊</div>';
+        return;
+      }
+
+      let html = '';
+      carrinho.forEach(item => {
+        html += `
+          <div class="item-carrinho">
+            <div class="item-info">
+              <h3>${item.nome}</h3>
+              <p>R$ ${item.preco.toFixed(2)} x ${item.quantidade} = R$ ${(item.preco * item.quantidade).toFixed(2)}</p>
+            </div>
+            <div class="item-controles">
+              <button class="btn-quantidade" onclick="alterarQuantidade(${item.id}, -1)">−</button>
+              <span class="quantidade-display">${item.quantidade}</span>
+              <button class="btn-quantidade" onclick="alterarQuantidade(${item.id}, 1)">+</button>
+              <button class="btn-quantidade remover" onclick="removerItem(${item.id})">🗑️</button>
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+      atualizarTotal();
+    }
+
+
+    function alterarQuantidade(id, mudanca) {
+      const item = carrinho.find(i => i.id === id);
+      if (item) {
+        item.quantidade += mudanca;
+        if (item.quantidade <= 0) {
+          removerItem(id);
+        } else {
+          carregarCarrinho();
+        }
+      }
+    }
+
+
+    function removerItem(id) {
+      carrinho = carrinho.filter(i => i.id !== id);
+      carregarCarrinho();
+    }
+
+
+    function atualizarTotal() {
+      const total = carrinho.reduce((sum, item) => sum + (item.preco * item.quantidade), 0);
+      document.getElementById('total-valor').textContent = `R$ ${total.toFixed(2)}`;
+      calcularTroco();
+    }
+
+
+    function calcularTroco() {
+      const total = carrinho.reduce((sum, item) => sum + (item.preco * item.quantidade), 0);
+      const valorRecebido = parseFloat(document.getElementById('valor-recebido').value) || 0;
+      const resultadoDiv = document.getElementById('resultado-troco');
+
+      if (valorRecebido >= total && valorRecebido > 0) {
+        const troco = valorRecebido - total;
+        resultadoDiv.textContent = `💰 Troco: R$ ${troco.toFixed(2)}`;
+        resultadoDiv.style.display = 'block';
+        resultadoDiv.className = 'resultado-calculo sucesso';
+      } else if (valorRecebido > 0 && valorRecebido < total) {
+        const faltante = total - valorRecebido;
+        resultadoDiv.textContent = `❌ Faltam: R$ ${faltante.toFixed(2)}`;
+        resultadoDiv.style.display = 'block';
+        resultadoDiv.className = 'resultado-calculo erro';
+      } else {
+        resultadoDiv.style.display = 'none';
+      }
+    }
+
+
+    function gerarCodigoPix() {
+      const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      let codigo = '';
+      for (let i = 0; i < 32; i++) {
+        codigo += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+      }
+      document.getElementById('codigo-pix').value = codigo;
+    }
+
+
+    function finalizarCompra(tipoPagamento) {
+      const total = carrinho.reduce((sum, item) => sum + (item.preco * item.quantidade), 0);
+
+      if (carrinho.length === 0) {
+        alert('❌ Seu carrinho está vazio!');
+        return;
+      }
+
+      let mensagem = `🎉 COMPRA REALIZADA COM SUCESSO!\n\n`;
+      mensagem += `💰 Total: R$ ${total.toFixed(2)}\n`;
+      mensagem += `📦 Itens: ${carrinho.length} produto(s)\n`;
+      mensagem += `💳 Pagamento: `;
+
+      if (tipoPagamento === 'dinheiro') {
+        const valorRecebido = parseFloat(document.getElementById('valor-recebido').value) || 0;
+        if (valorRecebido < total) {
+          alert('❌ Valor recebido insuficiente!');
+          return;
+        }
+        const troco = valorRecebido - total;
+        mensagem += `Dinheiro\n💰 Troco: R$ ${troco.toFixed(2)}`;
+
+      } else if (tipoPagamento === 'pix') {
+        const codigoPix = document.getElementById('codigo-pix').value;
+        if (!codigoPix) {
+          alert('❌ Gere o código PIX primeiro!');
+          return;
+        }
+        mensagem += `PIX\n📱 Código: ${codigoPix.substring(0, 8)}...`;
+
+      } else if (tipoPagamento === 'cartao') {
+        const numeroCartao = document.getElementById('numero-cartao').value;
+        const nomeCartao = document.getElementById('nome-cartao').value;
+        const validadeCartao = document.getElementById('validade-cartao').value;
+        const cvvCartao = document.getElementById('cvv-cartao').value;
+
+        if (!numeroCartao || !nomeCartao || !validadeCartao || !cvvCartao) {
+          alert('❌ Preencha todos os campos do cartão!');
+          return;
+        }
+
+        const tipoCartao = document.querySelector('input[name="tipo-cartao"]:checked').value;
+        mensagem += `Cartão de ${tipoCartao}\n💳 Final: ****${numeroCartao.slice(-4)}`;
+      }
+
+      mensagem += `\n\n✅ Pedido será processado em breve!`;
+      alert(mensagem);
+
+
+      carrinho = [];
+      carregarCarrinho();
+      document.getElementById('valor-recebido').value = '';
+      document.getElementById('codigo-pix').value = '';
+      document.getElementById('numero-cartao').value = '';
+      document.getElementById('nome-cartao').value = '';
+      document.getElementById('validade-cartao').value = '';
+      document.getElementById('cvv-cartao').value = '';
+    }
+
+
+    document.getElementById('valor-recebido').addEventListener('input', calcularTroco);
+
+
+    document.getElementById('numero-cartao').addEventListener('input', function (e) {
+      let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+      let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+      e.target.value = formattedValue;
+    });
+
+
+    document.getElementById('validade-cartao').addEventListener('input', function (e) {
+      let value = e.target.value.replace(/\D/g, '');
+      if (value.length >= 2) {
+        value = value.substring(0, 2) + '/' + value.substring(2, 4);
+      }
+      e.target.value = value;
+    });
+
+
+    carregarCarrinho();
+  </script>
+
+
+</body>
+
+</html>

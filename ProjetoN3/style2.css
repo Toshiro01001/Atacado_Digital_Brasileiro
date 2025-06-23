@@ -265,7 +265,7 @@ body {
 
 .header {
   text-align: center;
-  color: #fff;
+  color: rgb(80, 200, 120, 1);
   margin-bottom: 40px;
 }
 
@@ -311,6 +311,9 @@ body {
   color: #fff;
   margin-bottom: 40px;
   grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
 .admin-subtitle {
@@ -323,4 +326,172 @@ body {
   color: rgba(255, 215, 00, 1) !important;
   font-size: 20px;
   font-weight: bold;
+}
+
+.banner {
+  color: rgb(80, 200, 120, 1);
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+  margin-bottom: 15px;
+  display: flex;
+}
+
+.carrinho-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+}
+
+.itens-section {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.pagamento-section {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  height: fit-content;
+}
+
+.item-carrinho {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 15px;
+  margin: 15px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.item-info h3 {
+  color: rgb(255, 215, 0);
+  font-size: 1.1em;
+  margin: 0;
+}
+
+.item-info p {
+  color: rgba(255, 255, 255, 0.8);
+  margin: 5px 0;
+}
+
+.item-controles {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-quantidade {
+  background: rgb(40, 167, 69);
+  color: white;
+  border: none;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-quantidade:hover {
+  background: rgb(30, 140, 55);
+}
+
+.btn-quantidade.remover {
+  background: rgb(220, 53, 69);
+}
+
+.btn-quantidade.remover:hover {
+  background: rgb(200, 35, 51);
+}
+
+.quantidade-display {
+  color: white;
+  font-weight: bold;
+  min-width: 30px;
+  text-align: center;
+  font-size: 18px;
+}
+
+.total-section {
+  background: rgba(255, 215, 0, 0.2);
+  padding: 20px;
+  border-radius: 15px;
+  margin: 20px 0;
+  text-align: center;
+}
+
+.total-valor {
+  color: rgb(255, 215, 0);
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.metodo-pagamento {
+  margin: 20px 0;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+}
+
+.metodo-pagamento h3 {
+  color: rgb(255, 215, 0);
+  margin-bottom: 15px;
+}
+
+.carrinho-vazio {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.2em;
+  padding: 40px;
+}
+
+.resultado-calculo {
+  padding: 15px;
+  border-radius: 10px;
+  margin: 10px 0;
+  text-align: center;
+  font-weight: bold;
+}
+
+.resultado-calculo.sucesso {
+  background: rgba(40, 167, 69, 0.3);
+  color: rgb(72, 187, 120);
+}
+
+.resultado-calculo.erro {
+  background: rgba(220, 53, 69, 0.3);
+  color: rgb(255, 107, 107);
+}
+
+.radio-group {
+  display: flex;
+  gap: 20px;
+  margin: 15px 0;
+}
+
+.radio-group label {
+  color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+@media (max-width: 768px) {
+  .carrinho-container {
+    grid-template-columns: 1fr;
+  }
 }
