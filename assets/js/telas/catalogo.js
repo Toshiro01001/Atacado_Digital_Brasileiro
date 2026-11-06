@@ -39,6 +39,10 @@ export function telaCatalogo(alvo, departamento = '') {
               type: 'search', id: 'busca', value: termo, placeholder: 'Nome, código ou marca', autocomplete: 'off',
               oninput: (e) => { termo = e.target.value; listar(); },
             }))),
+        h('ol.teste-rapido', { 'aria-label': 'Como testar este sistema' },
+          h('li', null, 'Mude a quantidade e veja o preço cair por faixa.'),
+          h('li', null, 'Adicione até passar do pedido mínimo e feche o pedido.'),
+          h('li', null, h('span', null, 'Veja o resultado no ', h('a', { href: '#/gestor' }, 'painel do gestor'), ' e no ', h('a', { href: '#/sql' }, 'console SQL'), '.'))),
         corpoTabela),
       lateralPedido));
   listar();

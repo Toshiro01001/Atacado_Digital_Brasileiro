@@ -2,7 +2,9 @@
 
 ![Catálogo do Atacado Digital com preços por quantidade](docs/tela.webp)
 
-Sistema de demonstração de atacado B2B: catálogo por departamento, preço por faixa de quantidade, pedido mínimo, carrinho, pedido gravado em transação com baixa de estoque e painel do gestor. **Todos os dados são fictícios** (empresas, marcas, pessoas e documentos) e não há pagamento real.
+**Ver funcionando:** https://toshiro01001.github.io/Atacado_Digital_Brasileiro/
+
+Fiz este sistema de demonstração de atacado B2B com catálogo por departamento, preço por faixa de quantidade, pedido mínimo, carrinho, pedido gravado em transação com baixa de estoque e painel do gestor. **Todos os dados são fictícios** (empresas, marcas, pessoas e documentos) e não há pagamento real.
 
 Nasceu de um projeto acadêmico, guardado em [`legado/`](legado/README.md). O que mudou nos scripts SQL está em [`sql/README.md`](sql/README.md).
 

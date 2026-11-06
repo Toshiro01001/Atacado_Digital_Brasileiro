@@ -21,7 +21,7 @@ t('sem innerHTML, outerHTML, insertAdjacentHTML, eval ou document.write', achar(
 t('sem travessão nem meia-risca nos arquivos do projeto', achar(proprios, /[–—]/).length === 0, achar(proprios, /[–—]/));
 const html = ler('index.html');
 t('CSP declara wasm-unsafe-eval', html.includes("'wasm-unsafe-eval'") && !html.includes("'unsafe-inline'") && !html.includes("'unsafe-eval'"));
-t('nenhum script, estilo ou fonte vem de fora', !/(src|href)="https?:\/\/(?!mileumalinhas\.com\.br)/.test(html) && achar(arquivos('assets/css', /\.css$/), /url\(https?:/).length === 0);
+t('nenhum script, estilo ou fonte vem de fora', !/(src|href)="https?:\/\/(?!mileumalinhas\.com\.br)/.test(html.replace(/<link rel="canonical"[^>]*>/, '')) && achar(arquivos('assets/css', /\.css$/), /url\(https?:/).length === 0);
 const todos = [...proprios, ...arquivos('legado', /\.(html|sql|css)$/i), ...arquivos('tests', /\.(php|cjs)$/)];
 t('nenhum CPF com aparência real', achar(todos, /\b\d{3}\.\d{3}\.\d{3}-\d{2}\b/).length === 0, achar(todos, /\b\d{3}\.\d{3}\.\d{3}-\d{2}\b/));
 t('nenhum CNPJ com aparência real', achar(todos, /\b\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}\b/).length === 0);
@@ -39,7 +39,7 @@ t('PHP não interpola valor de usuário em SQL', achar(arquivos('server/src', /\
 const semAviso = arquivos('legado', /\.html$/i).filter((a) => !ler(a).includes('Sistema de demonstração'));
 t('toda página do legado traz o aviso de demonstração', semAviso.length === 0, semAviso);
 const readme = ler('README.md').trimEnd().split('\n');
-t('README termina com a linha exigida', readme.at(-1) === 'Desenvolvido por Rodrigo Terroso Junior. O Claude, da Anthropic, foi usado como ferramenta durante o desenvolvimento.');
+t('README termina com a linha exigida', readme.at(-1) === 'Desenvolvi este projeto e usei o Claude, da Anthropic, como ferramenta durante o desenvolvimento.');
 t('versão e licença do sql.js registradas', fs.existsSync(path.join(raiz, 'vendor/sqljs/VERSAO.txt')) && fs.existsSync(path.join(raiz, 'vendor/sqljs/LICENSE')));
 console.log(`\nResultado: ${falhas} falhas`);
 process.exit(falhas ? 1 : 0);
