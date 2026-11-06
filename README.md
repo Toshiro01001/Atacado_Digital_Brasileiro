@@ -1,5 +1,7 @@
 # Atacado Digital
 
+![Catálogo do Atacado Digital com preços por quantidade](docs/tela.webp)
+
 Sistema de demonstração de atacado B2B: catálogo por departamento, preço por faixa de quantidade, pedido mínimo, carrinho, pedido gravado em transação com baixa de estoque e painel do gestor. **Todos os dados são fictícios** (empresas, marcas, pessoas e documentos) e não há pagamento real.
 
 Nasceu de um projeto acadêmico, guardado em [`legado/`](legado/README.md). O que mudou nos scripts SQL está em [`sql/README.md`](sql/README.md).
@@ -95,4 +97,4 @@ NODE_PATH=$(npm root -g) node tests/e2e/fluxos.cjs
 
 HTML, CSS e JavaScript sem build. [sql.js](vendor/sqljs/VERSAO.txt) 1.15.2 (MIT), copiado para o repositório, sem CDN. Fontes Archivo e IBM Plex Mono ([OFL](assets/fonts/VERSAO.txt)), também locais. PHP 8 com PDO. SQLite e MySQL/MariaDB.
 
-Desenvolvido por Rodrigo Terroso Junior. O Claude, da Anthropic, foi usado como ferramenta durante o desenvolvimento.
+Desenvolvi este projeto e usei o Claude, da Anthropic, como ferramenta durante o desenvolvimento.
