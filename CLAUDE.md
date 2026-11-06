@@ -1,10 +1,17 @@
 # Atacado Digital Brasileiro
 
-Projeto acadêmico que simula compras no atacado, na pasta `ProjetoN3/`: páginas em HTML e CSS, `index.php`, departamentos, cadastros e scripts SQL em `SQL/`.
+Sistema de demonstração de atacado B2B, com dados fictícios, em duas camadas que usam os mesmos scripts de `sql/`:
+
+- `index.html` e `assets/`: SQLite no navegador (sql.js em `vendor/`). Roda no GitHub Pages.
+- `server/`: PHP 8 com PDO e API JSON. SQLite por padrão, MySQL por variável de ambiente.
+- `tests/`: testes da API (PHP sem framework) e do navegador (Playwright).
+- `legado/`: o projeto acadêmico original (`ProjetoN3`), só como registro.
 
 ## Como este projeto funciona
 
-- O PHP e o SQL precisam de servidor: o GitHub Pages serve só a parte estática.
+- O PHP precisa de servidor: o GitHub Pages serve só a parte estática.
+- Sem build. Consultas sempre parametrizadas, e o texto na tela entra por `textContent`.
+- Todo dado de exemplo é fictício e rotulado (`FICT-...`, e-mails `.invalid`). Sem usuários nem senhas no repositório.
 
 ## Regras de trabalho
 

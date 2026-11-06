@@ -1,0 +1,4 @@
+# Para hospedagem Apache: envia toda rota ao index.php.
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.php [L]

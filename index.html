@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; font-src 'self'; img-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="description" content="Sistema de demonstração de atacado B2B com banco SQLite real rodando no navegador. Todos os dados são fictícios.">
+  <title>Atacado Digital, sistema de demonstração</title>
+  <link rel="icon" href="assets/icone.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/fonts/archivo-latin-wdth-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body>
+  <a class="pular" href="#tela">Pular para o conteúdo</a>
+  <header class="topo">
+    <a class="marca" href="#/catalogo">
+      <span class="marca-nome">Atacado Digital</span>
+      <span class="marca-selo">Sistema de demonstração</span>
+    </a>
+    <nav class="abas" aria-label="Principal">
+      <a href="#/catalogo" data-aba="catalogo">Catálogo</a>
+      <a href="#/pedido" data-aba="pedido">Pedido <span class="contador" id="contador-carrinho" hidden>0</span></a>
+      <a href="#/historico" data-aba="historico">Histórico</a>
+      <a href="#/gestor" data-aba="gestor">Gestor</a>
+      <a href="#/sql" data-aba="sql"><span><span class="so-largo">Console </span>SQL</span></a>
+    </nav>
+    <button class="botao-como" type="button" id="abrir-como">Como isto funciona</button>
+  </header>
+
+  <main id="tela" tabindex="-1">
+    <p class="carregando" id="carregando">Abrindo o banco de dados no navegador...</p>
+    <noscript><p class="carregando">Este sistema roda um banco de dados dentro do navegador e precisa de JavaScript ligado.</p></noscript>
+  </main>
+
+  <footer class="rodape">
+    <p>Empresas, marcas, pessoas, documentos e preços são fictícios. Nenhum pagamento é feito aqui.</p>
+    <p>Demonstração feita por <a href="https://mileumalinhas.com.br" rel="noopener">Mil e Uma Linhas!</a></p>
+    <p id="estado-salvamento" class="estado-salvamento" role="status"></p>
+  </footer>
+
+  <button class="fita-sql" type="button" id="fita-sql" title="Abrir o console SQL">
+    <span class="fita-rotulo">Última consulta</span>
+    <code id="fita-texto">aguardando</code>
+    <span class="fita-medida" id="fita-medida"></span>
+  </button>
+
+  <div class="aviso-flutuante" id="aviso" role="status" aria-live="polite" hidden></div>
+
+  <dialog class="dialogo" id="dialogo-como" aria-labelledby="como-titulo">
+    <div class="dialogo-corpo">
+      <h2 id="como-titulo">Como isto funciona</h2>
+      <p>Isto é um sistema de atacado de verdade, só que com dados inventados. O banco de dados é um arquivo SQLite que roda dentro do seu navegador, por meio de WebAssembly. Nada sai do seu aparelho.</p>
+      <h3>O que acontece quando você fecha um pedido</h3>
+      <p>O sistema abre uma transação: cria o pedido, calcula o preço pela faixa de quantidade, desconta o estoque só se ainda houver saldo e registra a movimentação. Se qualquer passo falhar, tudo é desfeito. A faixa no rodapé da tela e o console SQL mostram os comandos reais.</p>
+      <h3>Duas camadas, o mesmo banco</h3>
+      <p>Esta página é a versão que roda em hospedagem simples, como o GitHub Pages, que não executa PHP. O repositório traz também a versão de servidor: PHP 8 com PDO, API em JSON, login com senha protegida por hash e banco SQLite ou MySQL. As duas usam os mesmos arquivos SQL.</p>
+      <h3>O que dá para adaptar ao seu negócio</h3>
+      <ul>
+        <li>Catálogo, departamentos, unidades e faixas de preço por quantidade.</li>
+        <li>Pedido mínimo, condições por cliente e etapas do pedido.</li>
+        <li>Painel do gestor com os indicadores que você acompanha.</li>
+        <li>Integração com emissão de nota, boleto ou Pix, feita no servidor.</li>
+      </ul>
+      <p class="dialogo-nota">Aqui, cada navegador tem o próprio banco. Para vários usuários compartilharem os dados, usa-se a versão de servidor.</p>
+      <form method="dialog"><button class="botao" type="submit">Fechar</button></form>
+    </div>
+  </dialog>
+
+  <script src="vendor/sqljs/sql-wasm.js"></script>
+  <script type="module" src="assets/js/app.js"></script>
+</body>
+</html>

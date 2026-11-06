@@ -1,0 +1,5 @@
+node_modules/
+tests/saida/
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm

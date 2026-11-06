@@ -1,0 +1,6 @@
+sql.js 1.15.2 (SQLite compilado para WebAssembly)
+Origem: pacote npm sql.js, arquivos dist/sql-wasm.js e dist/sql-wasm.wasm, sem alteração
+Licença: MIT (arquivo LICENSE nesta pasta)
+SHA-256:
+b46d4bddfdde8a787fc4764bd0a405cdfdf96fbd77e6a4e95446106826ecfa47  sql-wasm.js
+0dfeecda2070b36da0cd4f6afa250af9453de528a983770f85b13d5d6b667572  sql-wasm.wasm
