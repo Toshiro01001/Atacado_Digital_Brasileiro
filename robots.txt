@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://toshiro01001.github.io/Atacado_Digital_Brasileiro/sitemap.xml
