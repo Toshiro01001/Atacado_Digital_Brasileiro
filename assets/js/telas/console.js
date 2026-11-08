@@ -41,9 +41,9 @@ function esqueleto(sql) {
 /** Primeira barreira: mensagem clara. A garantia real é a cópia descartável com query_only. */
 export function validarLeitura(sql) {
   const base = esqueleto(sql).replace(/;\s*$/, '');
-  if (!base) return 'Escreva uma consulta.';
-  if (base.includes(';')) return 'Rode um comando por vez.';
-  if (!/^(SELECT|WITH|EXPLAIN)\b/i.test(base)) return 'Este console é só de leitura: use SELECT, WITH ou EXPLAIN.';
+  if (!base) return 'Escreva uma consulta na caixa acima ou toque em "Carregar exemplo".';
+  if (base.includes(';')) return 'Rode um comando por vez: apague o ponto e vírgula e o que vem depois dele.';
+  if (!/^(SELECT|WITH|EXPLAIN)\b/i.test(base)) return 'Este console é só de leitura: comece a consulta com SELECT, WITH ou EXPLAIN.';
   if (/\bRECURSIVE\b/i.test(base)) return 'Consultas recursivas ficam de fora: poderiam travar a aba.';
   return null;
 }
@@ -108,7 +108,8 @@ export function telaConsole(alvo) {
 
   alvo.replaceChildren(h('section.pagina.console', null,
     h('div.barra', null, h('h1', { tabIndex: -1 }, 'Console SQL'),
-      h('p.nota', null, 'Só leitura. Cada consulta roda em uma cópia descartável do banco.')),
+      h('p.nota', null, 'Só leitura: aqui nada pode ser alterado ou apagado.')),
+    h('p.intro-tela', null, 'Esta tela é para quem conhece SQL (a linguagem usada para perguntar coisas a um banco de dados). Se você não conhece, não tem problema: toque em "Carregar exemplo" e depois em "Executar" para ver os dados que a loja guarda. Cada consulta roda em uma cópia descartável do banco, então não há como estragar nada.'),
     h('div.console-grade', null,
       h('div.console-principal', null,
         editor,
@@ -117,13 +118,13 @@ export function telaConsole(alvo) {
           h('button.botao.botao-claro', { type: 'button', onclick: () => { editor.value = EXEMPLO; textoEditor = EXEMPLO; rodar(); } }, 'Carregar exemplo')),
         resultado,
         h('details.objetos', null,
-          h('summary', null, `Tabelas e visões (${objetos.length})`),
+          h('summary', null, `Tabelas e visões do banco (${objetos.length}). Toque em um nome para ver os dados dele`),
           h('ul', null, objetos.map(([nome, tipo]) => h('li', null,
             h('button.botao-texto', { type: 'button', onclick: () => { editor.value = `SELECT * FROM ${nome} LIMIT 50`; textoEditor = editor.value; rodar(); } }, nome),
             h('span.nota', null, tipo === 'view' ? ' visão' : ' tabela')))))),
       h('aside.console-historico', { 'aria-label': 'Consultas executadas pelas telas' },
         h('h2', null, 'O que as telas executaram'),
-        h('p.nota', null, 'Comandos reais, do mais recente ao mais antigo. Toque em uma consulta para abrir no editor.'),
+        h('p.nota', null, 'Cada vez que você usa o site, as telas mandam comandos ao banco de dados. Esta é a lista real deles, do mais recente ao mais antigo. Toque em um comando para abrir no editor.'),
         h('ol.lista-consultas', { id: 'lista-consultas' }, consultasRegistradas().slice(0, 60).map((c) => h('li', null,
           h('button.consulta', {
             type: 'button',

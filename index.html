@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; font-src 'self'; img-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
   <meta name="referrer" content="no-referrer">
-  <meta name="description" content="Sistema de demonstração de atacado B2B com banco SQLite real rodando no navegador. Todos os dados são fictícios.">
+  <meta name="description" content="Loja de atacado de demonstração, para empresas que compram em quantidade: catálogo, preço por quantidade, pedidos e painel do gestor. Tudo roda no navegador e todos os dados são fictícios.">
   <title>Atacado Digital, sistema de demonstração</title>
   <meta name="theme-color" content="#0f3b46">
   <link rel="canonical" href="https://toshiro01001.github.io/Atacado_Digital_Brasileiro/">
@@ -38,18 +38,18 @@
   </header>
 
   <main id="tela" tabindex="-1">
-    <p class="carregando" id="carregando">Abrindo o banco de dados no navegador...</p>
-    <noscript><p class="carregando">Este sistema roda um banco de dados dentro do navegador e precisa de JavaScript ligado.</p></noscript>
+    <p class="carregando" id="carregando">Preparando a loja de exemplo. Só um instante...</p>
+    <noscript><p class="carregando">Este site de demonstração roda inteiro dentro do navegador e precisa do JavaScript ligado para funcionar.</p></noscript>
   </main>
 
   <footer class="rodape">
-    <p>Empresas, marcas, pessoas, documentos e preços são fictícios. Nenhum pagamento é feito aqui.</p>
+    <p>Este site é só uma demonstração. Empresas, marcas, pessoas, documentos e preços são fictícios. Nada é vendido nem cobrado aqui.</p>
     <p>Demonstração feita por <a href="https://mileumalinhas.com.br" rel="noopener">Mil e Uma Linhas!</a>. Quer um sistema assim na sua empresa? Escreva para <a href="mailto:contato@mileumalinhas.com.br">contato@mileumalinhas.com.br</a>.</p>
     <p id="estado-salvamento" class="estado-salvamento" role="status"></p>
   </footer>
 
-  <button class="fita-sql" type="button" id="fita-sql" title="Abrir o console SQL">
-    <span class="fita-rotulo">Última consulta</span>
+  <button class="fita-sql" type="button" id="fita-sql" title="Último comando enviado ao banco de dados. Toque para abrir o Console SQL.">
+    <span class="fita-rotulo">Último comando no banco</span>
     <code id="fita-texto">aguardando</code>
     <span class="fita-medida" id="fita-medida"></span>
   </button>
@@ -59,11 +59,12 @@
   <dialog class="dialogo" id="dialogo-como" aria-labelledby="como-titulo">
     <div class="dialogo-corpo">
       <h2 id="como-titulo">Como isto funciona</h2>
-      <p>Isto é um sistema de atacado de verdade, só que com dados inventados. O banco de dados é um arquivo SQLite que roda dentro do seu navegador, por meio de WebAssembly. Nada sai do seu aparelho.</p>
+      <p>Este site é um exemplo de loja de atacado, daquelas em que uma empresa compra de outra em grande quantidade. Tudo aqui é inventado: as empresas, os produtos, os preços e os pedidos. Nada é vendido nem cobrado de verdade.</p>
+      <p>Você pode usar sem medo: escolha produtos no Catálogo, feche um pedido e veja o resultado nas abas Histórico e Gestor. Se quiser começar de novo, a aba Gestor tem o botão "Restaurar dados de exemplo".</p>
       <h3>O que acontece quando você fecha um pedido</h3>
-      <p>O sistema abre uma transação: cria o pedido, calcula o preço pela faixa de quantidade, desconta o estoque só se ainda houver saldo e registra a movimentação. Se qualquer passo falhar, tudo é desfeito. A faixa no rodapé da tela e o console SQL mostram os comandos reais.</p>
-      <h3>Duas camadas, o mesmo banco</h3>
-      <p>Esta página é a versão que roda em hospedagem simples, como o GitHub Pages, que não executa PHP. O repositório traz também a versão de servidor: PHP 8 com PDO, API em JSON, login com senha protegida por hash e banco SQLite ou MySQL. As duas usam os mesmos arquivos SQL.</p>
+      <p>O sistema grava o pedido, calcula o preço pela quantidade comprada (quanto mais unidades, menor o preço de cada uma), desconta os itens do estoque e anota essa movimentação. Tudo isso acontece de uma vez só: se algum passo falhar, nada é gravado pela metade.</p>
+      <h3>Onde ficam os seus dados de teste</h3>
+      <p>Tudo fica guardado só no seu navegador, neste aparelho. Nada é enviado para a internet. Por isso, cada pessoa que abre o site vê a própria loja, e o que você fizer aqui não aparece para mais ninguém.</p>
       <h3>O que dá para adaptar ao seu negócio</h3>
       <ul>
         <li>Catálogo, departamentos, unidades e faixas de preço por quantidade.</li>
@@ -71,7 +72,12 @@
         <li>Painel do gestor com os indicadores que você acompanha.</li>
         <li>Integração com emissão de nota, boleto ou Pix, feita no servidor.</li>
       </ul>
-      <p class="dialogo-nota">Aqui, cada navegador tem o próprio banco. Para vários usuários compartilharem os dados, usa-se a versão de servidor.</p>
+      <details class="detalhes-tecnicos">
+        <summary>Detalhes técnicos</summary>
+        <p>O banco de dados é um SQLite real que roda dentro do navegador, por meio de WebAssembly (sql.js). Ele é salvo no IndexedDB do navegador depois de cada gravação. A tela não chama nenhum servidor.</p>
+        <p>Fechar um pedido abre uma transação: INSERT do pedido, cálculo do preço pela faixa de quantidade, UPDATE condicional do estoque (só desconta se ainda houver saldo) e registro da movimentação. Qualquer falha gera ROLLBACK. A faixa no rodapé e o Console SQL mostram os comandos reais.</p>
+        <p>Esta página é a versão para hospedagem estática, como o GitHub Pages, que não executa código de servidor. O repositório traz também a versão de servidor: PHP 8 com PDO, API em JSON, login com senha protegida por hash, token CSRF e banco SQLite ou MySQL. As duas versões usam os mesmos arquivos SQL. Para vários usuários compartilharem os mesmos dados, usa-se a versão de servidor.</p>
+      </details>
       <form method="dialog"><button class="botao" type="submit">Fechar</button></form>
     </div>
   </dialog>

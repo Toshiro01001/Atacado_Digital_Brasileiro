@@ -233,6 +233,11 @@ table { border-collapse: collapse; width: 100%; }
 .dialogo-corpo h2 { font-size: 22px; margin-bottom: 8px; }
 .dialogo-corpo ul { margin: 4px 0 10px; padding-left: 20px; }
 .dialogo-nota { color: var(--tinta-2); }
+.detalhes-tecnicos { margin: 12px 0 4px; border-top: 1px solid var(--linha); padding-top: 10px; }
+.detalhes-tecnicos summary { cursor: pointer; font-weight: 650; padding: 6px 0; }
+.detalhes-tecnicos p { color: var(--tinta-2); font-size: 13px; }
+.intro-tela { margin: 0 22px 10px; font-size: 14.5px; line-height: 1.4; }
+.pagina .intro-tela { margin: 0 0 10px; }
 .dialogo-acoes { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; margin-top: 12px; }
 
 /* Computador estreito */
@@ -275,6 +280,7 @@ table { border-collapse: collapse; width: 100%; }
   .campo-busca, .campo-busca input, .campo-cliente, .campo-cliente select { width: 100%; max-width: none; }
   .area-produtos { padding: 0; background: none; }
   .teste-rapido { grid-template-columns: minmax(0, 1fr); margin: 0 0 10px; }
+  .intro-tela { margin: 0 12px 10px; }
   .teste-rapido li { padding: 5px 10px; }
   .formulario thead, .lista thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
   .formulario, .formulario tbody, .lista, .lista tbody { display: block; width: 100%; }
