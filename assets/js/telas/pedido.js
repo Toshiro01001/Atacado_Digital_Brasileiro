@@ -11,7 +11,7 @@ export function seletorCliente(aoMudar) {
     carrinho.definirCliente(lista[0].id);
   }
   return h('label.campo-cliente', null,
-    h('span', null, 'Comprando como'),
+    h('span', null, 'Comprando como (empresa fictícia)'),
     h('select', {
       id: 'cliente',
       onchange: (e) => { carrinho.definirCliente(Number(e.target.value)); aoMudar?.(); },
@@ -36,7 +36,7 @@ export function painelPedido() {
   if (!resumo.linhas.length) {
     return h('div.pedido-mini', null,
       h('h2', null, 'Pedido atual'),
-      h('p.vazio', null, 'Escolha a quantidade em uma linha e toque em Adicionar.'),
+      h('p.vazio', null, 'Ainda não há nada aqui. Escolha a quantidade de um produto e toque em "Adicionar".'),
       medidorMinimo(resumo));
   }
   return h('div.pedido-mini', null,
@@ -52,8 +52,8 @@ export function painelPedido() {
 export function telaPedido(alvo, redesenhar) {
   const resumo = loja.resumirCarrinho(carrinho.conteudo());
   const bloqueio = !resumo.linhas.length ? 'Adicione itens pelo catálogo.'
-    : resumo.temProblema ? 'Corrija os itens marcados.'
-      : resumo.faltaMinimo > 0 ? 'Complete o pedido mínimo.' : null;
+    : resumo.temProblema ? 'Corrija os itens marcados em vermelho antes de fechar.'
+      : resumo.faltaMinimo > 0 ? 'O botão libera quando o total passar do pedido mínimo.' : null;
 
   function fechar() {
     try {
@@ -73,8 +73,9 @@ export function telaPedido(alvo, redesenhar) {
 
   alvo.replaceChildren(h('section.pagina', null,
     h('div.barra', null, h('h1', { tabIndex: -1 }, 'Pedido atual'), seletorCliente()),
+    h('p.intro-tela', null, 'Confira os itens, ajuste as quantidades se quiser e toque em "Fechar pedido". É só um teste: nada é cobrado.'),
     !resumo.linhas.length
-      ? h('p.vazio', null, 'O pedido está vazio. ', h('a', { href: '#/catalogo' }, 'Abrir o catálogo'))
+      ? h('p.vazio', null, 'O pedido está vazio. ', h('a', { href: '#/catalogo' }, 'Abrir o catálogo para escolher produtos'))
       : h('div.grade-pedido', null,
         h('div', null, tabela([
           { titulo: 'Produto', valor: (l) => [h('strong', null, l.nome), l.problema ? h('span.problema', null, l.problema) : null,
@@ -90,11 +91,11 @@ export function telaPedido(alvo, redesenhar) {
         h('aside.fechamento', null,
           h('p.total-grande', null, h('span', null, 'Total do pedido'), h('strong', { id: 'total-pedido' }, dinheiro(resumo.total))),
           medidorMinimo(resumo),
-          h('label.campo', null, h('span', null, 'Observação (opcional)'),
-            h('textarea', { rows: 2, maxLength: 500, value: observacao, oninput: (e) => { observacao = e.target.value; } })),
+          h('label.campo', null, h('span', null, 'Observação para a loja (opcional)'),
+            h('textarea', { rows: 2, maxLength: 500, value: observacao, placeholder: 'Exemplo: entregar pela manhã', oninput: (e) => { observacao = e.target.value; } })),
           h('button.botao.botao-principal', { type: 'button', id: 'fechar-pedido', disabled: Boolean(bloqueio), onclick: fechar }, 'Fechar pedido'),
           bloqueio ? h('p.nota', null, bloqueio) : null,
-          h('p.nota', null, 'Demonstração: nenhum pagamento é cobrado.')))));
+          h('p.nota', null, 'Demonstração: nenhum pagamento é cobrado e nenhuma entrega é feita.')))));
 }
 
 export function telaHistorico(alvo, redesenhar) {
@@ -102,13 +103,14 @@ export function telaHistorico(alvo, redesenhar) {
   const lista = loja.pedidosDoCliente(carrinho.clienteAtual());
   alvo.replaceChildren(h('section.pagina', null,
     h('div.barra', null, h('h1', { tabIndex: -1 }, 'Histórico de pedidos'), seletor),
+    h('p.intro-tela', null, 'Aqui ficam os pedidos já fechados pela empresa escolhida acima. Toque no número de um pedido para ver os itens.'),
     tabela([
       { titulo: 'Pedido', valor: (p) => h('a', { href: `#/pedido/${p.id}` }, loja.numeroPedido(p.id)) },
       { titulo: 'Data', valor: (p) => dataHora(p.criado_em) },
       { titulo: 'Situação', valor: (p) => seloStatus(p.status) },
       { titulo: 'Itens', num: true, valor: (p) => p.itens },
       { titulo: 'Total', num: true, valor: (p) => dinheiro(p.total_centavos) },
-    ], lista, { vazio: 'Este cliente ainda não tem pedidos. Feche um pelo catálogo.' })));
+    ], lista, { vazio: 'Esta empresa ainda não tem pedidos. Escolha produtos no catálogo e feche um pedido para ele aparecer aqui.' })));
 }
 
 export const seloStatus = (s) => h(`span.status.status-${s}`, null, loja.STATUS[s] ?? s);
@@ -117,7 +119,7 @@ export function telaDetalhePedido(alvo, id, recemCriado) {
   const p = loja.pedido(id);
   if (!p) {
     alvo.replaceChildren(h('section.pagina', null, h('h1', { tabIndex: -1 }, 'Pedido não encontrado'),
-      h('p.vazio', null, 'Ele pode ter sumido ao restaurar os dados. ', h('a', { href: '#/historico' }, 'Ver o histórico'))));
+      h('p.vazio', null, 'Ele pode ter sido apagado ao restaurar os dados de exemplo. ', h('a', { href: '#/historico' }, 'Ver o histórico de pedidos'))));
     return;
   }
   const comandos = recemCriado ? consultasRegistradas().filter((c) => c.origem === 'Fechar pedido').slice().reverse() : [];
@@ -134,8 +136,8 @@ export function telaDetalhePedido(alvo, id, recemCriado) {
     ], p.linhas),
     h('p.total-grande', null, h('span', null, 'Total'), h('strong', { id: 'total-gravado' }, dinheiro(p.total_centavos))),
     comandos.length ? h('section.transacao', null,
-      h('h2', null, 'O que acabou de acontecer no banco'),
-      h('p', null, 'Estes comandos rodaram como uma só transação. Se um deles falhasse, todos seriam desfeitos.'),
+      h('h2', null, 'O que acabou de acontecer no banco de dados'),
+      h('p', null, 'Seu pedido foi gravado e o estoque de cada item foi descontado. Para quem quiser ver por dentro, estes são os comandos reais que o sistema executou, todos de uma vez só (uma transação): se um deles falhasse, todos seriam desfeitos.'),
       h('ol.lista-comandos', null, comandos.map((c) => h('li', null,
         h('code', null, c.sql),
         c.vezes > 1 ? h('span.nota', null, `Repetido ${c.vezes} vezes, uma para cada item.`) : null)))) : null,

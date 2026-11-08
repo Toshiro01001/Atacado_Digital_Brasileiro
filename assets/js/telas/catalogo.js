@@ -36,13 +36,14 @@ export function telaCatalogo(alvo, departamento = '') {
           h('label.campo-busca', null,
             h('span', null, 'Buscar produto'),
             h('input', {
-              type: 'search', id: 'busca', value: termo, placeholder: 'Nome, código ou marca', autocomplete: 'off',
+              type: 'search', id: 'busca', value: termo, placeholder: 'Digite o nome, o código ou a marca', autocomplete: 'off',
               oninput: (e) => { termo = e.target.value; listar(); },
             }))),
+        h('p.intro-tela', null, 'Esta é uma loja de atacado de exemplo, com produtos e empresas inventados. Você pode testar à vontade: nada é vendido nem cobrado de verdade.'),
         h('ol.teste-rapido', { 'aria-label': 'Como testar este sistema' },
-          h('li', null, 'Mude a quantidade e veja o preço cair por faixa.'),
-          h('li', null, 'Adicione até passar do pedido mínimo e feche o pedido.'),
-          h('li', null, h('span', null, 'Veja o resultado no ', h('a', { href: '#/gestor' }, 'painel do gestor'), ' e no ', h('a', { href: '#/sql' }, 'console SQL'), '.'))),
+          h('li', null, 'Use os botões − e + para mudar a quantidade. Quanto mais unidades, menor o preço de cada uma.'),
+          h('li', null, 'Toque em "Adicionar" até passar do pedido mínimo e depois em "Revisar pedido" para fechar a compra.'),
+          h('li', null, h('span', null, 'Veja o resultado no ', h('a', { href: '#/gestor' }, 'painel do gestor'), ' (o lado de quem administra a loja) e, se quiser ir fundo, no ', h('a', { href: '#/sql' }, 'console SQL'), '.'))),
         corpoTabela),
       lateralPedido));
   listar();
@@ -55,8 +56,8 @@ function tabelaProdutos(lista, aoAdicionar) {
       h('th', { scope: 'col' }, 'Código'),
       h('th', { scope: 'col' }, 'Produto'),
       h('th.num', { scope: 'col' }, 'Estoque'),
-      h('th', { scope: 'col' }, 'Preço por quantidade'),
-      h('th', { scope: 'col' }, 'Comprar'))),
+      h('th', { scope: 'col' }, 'Preço de cada unidade, por quantidade'),
+      h('th', { scope: 'col' }, 'Quantidade e adicionar'))),
     h('tbody', null, lista.map((p) => linhaProduto(p, aoAdicionar))));
 }
 
@@ -108,7 +109,7 @@ function linhaProduto(p, aoAdicionar) {
     h('td.codigo', null, p.codigo),
     h('td.produto', null,
       h('strong', null, p.nome),
-      h('span.detalhe', null, `${p.marca}. Vendido por ${p.unidade}.`, p.qtd_minima > 1 ? ` Mínimo de ${p.qtd_minima}.` : '')),
+      h('span.detalhe', null, `${p.marca}. Vendido por ${p.unidade === 'un' ? 'unidade' : p.unidade}.`, p.qtd_minima > 1 ? ` Quantidade mínima: ${p.qtd_minima}.` : '')),
     h(`td.num.estoque${baixo ? '.baixo' : ''}`, { dados: { rotulo: 'Estoque' } },
       h('span.saldo', null, inteiro(p.estoque)), baixo ? h('span.selo-baixo', null, 'Baixo') : null),
     h('td.precos', null, h('div.etiqueta', null, celulas)),

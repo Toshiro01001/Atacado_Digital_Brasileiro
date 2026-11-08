@@ -42,8 +42,8 @@ function atualizarFita(c) {
 
 function mostrarSalvamento(ok) {
   document.getElementById('estado-salvamento').textContent = ok
-    ? 'Banco salvo neste navegador.'
-    : 'O navegador bloqueou o armazenamento: os dados valem só até fechar esta aba.';
+    ? 'Seus testes ficam salvos neste navegador, só neste aparelho.'
+    : 'O navegador bloqueou o armazenamento: o que você fizer aqui vale só até fechar esta aba.';
 }
 
 async function iniciar() {
@@ -57,7 +57,7 @@ async function iniciar() {
     await abrir();
   } catch (erro) {
     console.warn(erro);
-    document.getElementById('carregando').textContent = 'Não foi possível abrir o banco no navegador. Atualize a página ou tente um navegador mais recente.';
+    document.getElementById('carregando').textContent = 'Não foi possível preparar a loja de exemplo neste navegador. Atualize a página ou tente um navegador mais recente, como Chrome, Firefox ou Safari atualizados.';
     return;
   }
   mostrarSalvamento(estaPersistindo());
